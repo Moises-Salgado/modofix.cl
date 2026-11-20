@@ -52,19 +52,21 @@ Cada cambio que se sube a la rama `main` aparece en modofix.cl en uno o dos minu
 
 ## Dominio
 
-Los registros DNS de modofix.cl se administran en Hostinger y apuntan a GitHub Pages:
+Los registros DNS de modofix.cl se administran en Hostinger (hPanel › Dominios › modofix.cl › DNS) y apuntan a GitHub Pages:
 
-| Tipo  | Nombre | Valor                 |
-|-------|--------|-----------------------|
-| A     | @      | 185.199.108.153       |
-| A     | @      | 185.199.109.153       |
-| A     | @      | 185.199.110.153       |
-| A     | @      | 185.199.111.153       |
-| CNAME | www    | moises-salgado.github.io     |
+| Tipo  | Nombre | Valor                    |
+|-------|--------|--------------------------|
+| A     | @      | 185.199.108.153          |
+| A     | @      | 185.199.109.153          |
+| A     | @      | 185.199.110.153          |
+| A     | @      | 185.199.111.153          |
+| CNAME | www    | moises-salgado.github.io |
 
-En GitHub, la configuración está en Settings › Pages. El dominio personalizado es `modofix.cl` y la opción «Enforce HTTPS» está activada.
+No debe quedar ningún otro registro A, AAAA o CNAME para `@` ni para `www`. Los del creador de sitios de Hostinger (A a 77.37.42.130 y 89.116.213.102, AAAA que empiezan con 2a02:4780 y CNAME de www a www.modofix.cl.cdn.hstgr.net) se borran al hacer el cambio. Si Hostinger no deja borrarlos, primero hay que desconectar el dominio del sitio del creador.
+
+En GitHub, la configuración está en Settings › Pages: se publica desde la rama `main`, carpeta raíz, con el dominio personalizado `modofix.cl` (lo fija el archivo `CNAME`). Cuando el DNS ya apunta a GitHub y aparece el certificado, se marca «Enforce HTTPS» en esa misma página.
 
 ## Fuentes y video
 
 - **Tipografía:** Golos Text, desde Google Fonts.
-- **Video de portada:** adaptado de un fondo de MotionSites (color turquesa, bucle sin corte, 1280×720, sin audio). Antes de usarlo en el sitio público, confirma que tu plan de MotionSites lo permite.
+- **Video de portada:** adaptado de un fondo de MotionSites, con el brillo, las flechas y las estrellas del original pero en turquesa. Es un bucle sin corte de 9 segundos, sin audio: 1920×1080 para computador y 1280×720 para celular, más una imagen fija para cuando se pausa. Antes de usarlo en el sitio público, confirma que tu plan de MotionSites lo permite.
