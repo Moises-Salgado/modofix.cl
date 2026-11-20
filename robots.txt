@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://modofix.cl/sitemap.xml
