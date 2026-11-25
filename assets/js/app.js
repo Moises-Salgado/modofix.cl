@@ -1,5 +1,5 @@
 /*
-  modofix.cl: buscador de servicios, mensaje de WhatsApp, video de portada y opiniones.
+  modofix.cl: buscador de servicios, mensaje de WhatsApp, video de portada y opiniones publicadas al instante.
 
   La lista de servicios vive en index.html (cada fila tiene data-id, data-price, data-desde y data-part).
   Este archivo la lee desde la página: para cambiar un precio basta con editar esa fila.
@@ -392,7 +392,7 @@
     document.head.appendChild(s);
   }
 
-  /* ---------- opiniones: publicadas desde assets/js/opiniones.js, enviadas por WhatsApp ---------- */
+  /* ---------- opiniones: se leen y se publican en la planilla de Google (data-endpoint del formulario) ---------- */
   const starRow = (n) => {
     const el = document.createElement('span');
     el.className = 'mf-review__stars';
@@ -402,24 +402,40 @@
     return el;
   };
   const reviewsBox = $('[data-reviews]');
-  const published = Array.isArray(window.MODOFIX_OPINIONES) ? window.MODOFIX_OPINIONES : [];
-  const valid = published.filter((o) => o && String(o.nombre || '').trim() && String(o.comentario || '').trim() && Number(o.estrellas) >= 1 && Number(o.estrellas) <= 5);
-  if (reviewsBox && valid.length) {
+  const rform = $('[data-review]');
+  const endpoint = rform ? (rform.dataset.endpoint || '').trim() : '';
+  const LINK_RE = /https?:\/\/|www\.|\[url|<a\s/i;
+  const SHOWN = 6;
+  let reviews = [];
+  let showAll = false;
+  const reviewOk = (o) => o && String(o.nombre || '').trim() && String(o.comentario || '').trim() && Number(o.estrellas) >= 1 && Number(o.estrellas) <= 5;
+  const byDate = (list) => list.filter(reviewOk).sort((a, b) => String(b.fecha || '').localeCompare(String(a.fecha || '')));
+  const monthOf = (f) => {
+    const m = /^(\d{4})-(\d{2})/.exec(String(f || ''));
+    return m ? new Date(Number(m[1]), Number(m[2]) - 1, 1).toLocaleDateString('es-CL', { month: 'long', year: 'numeric' }) : '';
+  };
+  const renderReviews = (fresh) => {
+    if (!reviewsBox) return;
+    $$('.mf-reviews__summary, .mf-reviews__list, .mf-reviews__more', reviewsBox).forEach((el) => el.remove());
     const empty = $('[data-reviews-empty]', reviewsBox);
-    if (empty) empty.remove();
-    const avg = valid.reduce((a, o) => a + Math.round(Number(o.estrellas)), 0) / valid.length;
+    if (empty) empty.hidden = reviews.length > 0;
+    if (!reviews.length) return;
+    const avg = reviews.reduce((a, o) => a + Math.round(Number(o.estrellas)), 0) / reviews.length;
     const summary = document.createElement('p');
     summary.className = 'mf-reviews__summary';
     summary.appendChild(starRow(Math.round(avg)));
     const label = document.createElement('span');
-    label.textContent = avg.toLocaleString('es-CL', { maximumFractionDigits: 1 }) + ' de 5, ' + valid.length + (valid.length === 1 ? ' opinión' : ' opiniones');
+    label.textContent = avg.toLocaleString('es-CL', { maximumFractionDigits: 1 }) + ' de 5, ' + reviews.length + (reviews.length === 1 ? ' opinión' : ' opiniones');
     summary.appendChild(label);
     reviewsBox.appendChild(summary);
     const ul = document.createElement('ul');
     ul.className = 'mf-reviews__list';
-    valid.forEach((o) => {
+    reviews.forEach((o, i) => {
       const li = document.createElement('li');
       li.className = 'mf-review';
+      if (o.id) li.id = 'opinion-' + o.id;
+      if (fresh && o.id === fresh) li.classList.add('is-new');
+      if (!showAll && i >= SHOWN && o.id !== fresh) li.hidden = true;
       li.appendChild(starRow(Math.round(Number(o.estrellas))));
       const q = document.createElement('blockquote');
       q.className = 'mf-review__text';
@@ -427,17 +443,48 @@
       li.appendChild(q);
       const who = document.createElement('p');
       who.className = 'mf-review__who';
-      let when = '';
-      const m = /^(\d{4})-(\d{2})/.exec(String(o.fecha || ''));
-      if (m) when = new Date(Number(m[1]), Number(m[2]) - 1, 1).toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+      const when = monthOf(o.fecha);
       who.textContent = String(o.nombre).trim() + (when ? ', ' + when : '');
       li.appendChild(who);
       ul.appendChild(li);
     });
     reviewsBox.appendChild(ul);
+    const hiddenCount = $$('.mf-review[hidden]', ul).length;
+    if (hiddenCount) {
+      const more = document.createElement('button');
+      more.type = 'button';
+      more.className = 'mf-reviews__more';
+      more.textContent = 'Ver las ' + reviews.length + ' opiniones';
+      more.addEventListener('click', () => {
+        showAll = true;
+        const first = $('.mf-review[hidden]', ul);
+        $$('.mf-review[hidden]', ul).forEach((li) => { li.hidden = false; });
+        more.remove();
+        if (first) { first.setAttribute('tabindex', '-1'); first.focus({ preventScroll: true }); }
+      });
+      reviewsBox.appendChild(more);
+    }
+  };
+
+  // Primero la copia guardada en assets/js/opiniones.js; después, la lista al día desde la planilla.
+  reviews = byDate(Array.isArray(window.MODOFIX_OPINIONES) ? window.MODOFIX_OPINIONES.slice() : []);
+  renderReviews();
+  if (endpoint && reviewsBox && window.fetch) {
+    const ctrl = window.AbortController ? new AbortController() : null;
+    const timer = ctrl ? setTimeout(() => ctrl.abort(), 15000) : 0;
+    fetch(endpoint, { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
+      .then((r) => r.json())
+      .then((data) => {
+        if (!data || !data.ok || !Array.isArray(data.opiniones)) return;
+        const ids = new Set(data.opiniones.map((o) => o.id));
+        const mine = reviews.filter((o) => o.local && !ids.has(o.id));
+        reviews = byDate(mine.concat(data.opiniones));
+        renderReviews(mine.length ? mine[0].id : '');
+      })
+      .catch(() => { /* se queda la copia guardada */ })
+      .then(() => clearTimeout(timer));
   }
 
-  const rform = $('[data-review]');
   if (rform) {
     const help = $('[data-review-help]', rform);
     const helpText = help.textContent;
@@ -446,10 +493,16 @@
     const result = $('[data-review-result]', rform);
     const out = $('[data-review-text]', rform);
     const link = $('[data-review-link]', rform);
+    const btn = $('button[type="submit"]', rform);
+    const btnText = btn.textContent;
+    const trap = $('#op-web', rform);
+    let started = 0;
+    let sending = false;
     const say = (t, st) => {
       help.textContent = t;
       if (st) help.dataset.state = st; else delete help.dataset.state;
     };
+    rform.addEventListener('focusin', () => { if (!started) started = Date.now(); });
     rform.addEventListener('change', (e) => {
       if (e.target.name !== 'estrellas') return;
       const n = Number(e.target.value);
@@ -461,35 +514,78 @@
     });
     rform.addEventListener('submit', (e) => {
       e.preventDefault();
+      if (sending) return;
       const f = new FormData(rform);
-      const name = String(f.get('nombre') || '').trim();
+      const name = String(f.get('nombre') || '').replace(/\s+/g, ' ').trim();
       const stars = Number(f.get('estrellas') || 0);
-      const text = String(f.get('comentario') || '').trim();
+      const text = String(f.get('comentario') || '').replace(/\s+/g, ' ').trim();
       const nameEl = $('#op-nombre', rform);
       const textEl = $('#op-texto', rform);
-      nameEl.setAttribute('aria-invalid', String(!name));
-      textEl.setAttribute('aria-invalid', String(!text));
+      const nameBad = name.length < 2;
+      const textBad = text.length < 10;
+      nameEl.setAttribute('aria-invalid', String(nameBad));
+      textEl.setAttribute('aria-invalid', String(textBad));
       if (!stars) rating.setAttribute('data-invalid', ''); else rating.removeAttribute('data-invalid');
-      if (!name || !stars || !text) {
-        result.hidden = true;
-        say('Falta tu nombre, la calificación o el comentario. Complétalo para armar el mensaje.', 'error');
-        (!name ? nameEl : !stars ? $('input[name="estrellas"]', rform) : textEl).focus();
+      result.hidden = true;
+      if (nameBad || !stars || textBad) {
+        say(textBad && !nameBad && stars && text
+          ? 'Cuéntanos un poco más: el comentario debe tener al menos 10 letras.'
+          : 'Falta tu nombre, la calificación o el comentario.', 'error');
+        (nameBad ? nameEl : !stars ? $('input[name="estrellas"]', rform) : textEl).focus();
         return;
       }
-      const msg = [
-        'Hola ModoFix, quiero dejar una opinión.',
-        'Nombre: ' + name + '.',
-        'Calificación: ' + stars + ' de 5 ' + (stars === 1 ? 'estrella' : 'estrellas') + '.',
-        'Comentario: ' + text.replace(/\.?$/, '.')
-      ].join('\n');
-      out.textContent = msg;
-      link.href = waLink(msg);
-      result.hidden = false;
-      say(helpText);
-      let w = null;
-      try { w = window.open(link.href, '_blank'); } catch (err) { w = null; }
-      if (w) w.opener = null;
-      link.focus();
+      if (LINK_RE.test(name) || LINK_RE.test(text)) {
+        textEl.setAttribute('aria-invalid', 'true');
+        say('Las opiniones no pueden llevar enlaces. Quítalo y vuelve a publicar.', 'error');
+        textEl.focus();
+        return;
+      }
+      if (!endpoint || !window.fetch) {
+        say('Por ahora no se pueden publicar opiniones. Inténtalo más tarde.', 'error');
+        return;
+      }
+      const last = Number(store.get('modofix-opinion') || 0);
+      if (Date.now() - last < 10 * 60 * 1000) {
+        say('Ya publicaste una opinión hace un rato. ¡Gracias!', 'error');
+        return;
+      }
+      sending = true;
+      btn.disabled = true;
+      btn.textContent = 'Publicando…';
+      rform.setAttribute('aria-busy', 'true');
+      say('Publicando tu opinión…');
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ nombre: name, estrellas: stars, comentario: text, web: trap ? trap.value : '', ms: started ? Date.now() - started : 0 })
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (!data || !data.ok || !data.opinion) {
+            say((data && data.error) || 'No pudimos publicar tu opinión. Inténtalo de nuevo.', 'error');
+            return;
+          }
+          const o = Object.assign({}, data.opinion, { local: true });
+          reviews = byDate([o].concat(reviews.filter((x) => x.id !== o.id)));
+          renderReviews(o.id);
+          store.set('modofix-opinion', String(Date.now()));
+          rform.reset();
+          ratingText.textContent = 'Elige de 1 a 5 estrellas.';
+          started = 0;
+          out.textContent = '¡Gracias, ' + o.nombre + '! Tu opinión ya está publicada.';
+          link.href = '#opinion-' + o.id;
+          result.hidden = false;
+          say(helpText);
+        })
+        .catch(() => {
+          say('No pudimos publicar tu opinión. Revisa tu conexión e inténtalo de nuevo.', 'error');
+        })
+        .then(() => {
+          sending = false;
+          btn.disabled = false;
+          btn.textContent = btnText;
+          rform.removeAttribute('aria-busy');
+        });
     });
   }
 })();

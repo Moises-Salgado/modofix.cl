@@ -8,7 +8,7 @@ Es una sola página hecha con HTML, CSS y JavaScript, sin compilación. Se publi
 
 - **Portada:** el despiece animado del notebook y el celular. Las piezas se levantan al pasar el cursor y muestran su nombre y precio. De fondo va un video que se puede pausar.
 - **Servicios y precios:** un buscador que entiende frases como «se calienta» o «pantalla rota», con filtros por categoría y uso con teclado (↑ ↓, Enter, Esc). Los servicios elegidos arman el mensaje para WhatsApp y se recuerdan si la persona vuelve.
-- **Opiniones:** un formulario de 1 a 5 estrellas que envía la opinión por WhatsApp. Debajo aparecen las opiniones publicadas.
+- **Opiniones:** un formulario de 1 a 5 estrellas que publica la opinión al instante. Las opiniones se guardan en una planilla de Google y te llega un correo con cada una.
 - **Dónde estamos:** dirección, WhatsApp, correo y enlace a Google Maps.
 - **En celular:** una barra fija abajo con lo elegido y el botón para enviar.
 
@@ -19,7 +19,8 @@ index.html               la página (aquí está la lista de servicios)
 404.html                 página para enlaces que no existen
 assets/css/site.css      estilos
 assets/js/app.js         buscador, mensaje de WhatsApp, video y opiniones
-assets/js/opiniones.js   opiniones publicadas
+assets/js/opiniones.js   copia de respaldo de las opiniones
+apps-script/opiniones.gs código de la planilla de opiniones (Google Apps Script)
 assets/video/            video de portada (MP4) y su imagen fija
 assets/img/              logo, íconos e imagen para compartir (og.jpg)
 CNAME                    dominio de GitHub Pages (modofix.cl)
@@ -42,9 +43,18 @@ Cada servicio es una fila en `index.html`, dentro de `id="mf-list"`:
 - **Servicio nuevo:** copia una fila completa (el `<li>` entero) dentro de su categoría y ponle un `data-id` único, sin espacios. Luego actualiza el número de la categoría (`mf-group__n`) y el del filtro.
 - `data-part` dice qué pieza de la portada lo muestra. Los valores son `sistema`, `cpu`, `ram`, `disco`, `bisagras`, `pantalla`, `celular` y `equipo`.
 
-## Publicar una opinión
+## Opiniones
 
-Las instrucciones están al inicio de `assets/js/opiniones.js`. Agrega la opinión a la lista con el nombre, las estrellas y el comentario que te llegaron por WhatsApp. Publica solo opiniones reales.
+Las opiniones viven en la planilla de Google **Opiniones modofix.cl**, hoja «Opiniones», con las columnas Fecha, Nombre, Estrellas, Comentario, Publicada e Id. No cambies el nombre de la hoja ni el orden de las columnas.
+
+- **Cuando alguien opina**, la opinión se publica al instante como una fila nueva y te llega un correo a moises99.salgado@gmail.com con un enlace a la planilla.
+- **Para quitar una opinión**, desmarca «Publicada» o borra la fila. La página se actualiza en menos de un minuto.
+- **Para agregar una a mano**, escribe una fila nueva y marca «Publicada».
+- **Filtros contra spam:** no se aceptan enlaces, opiniones repetidas ni más de 10 por hora o 40 por día en total. Un mismo navegador puede publicar una opinión cada 10 minutos.
+
+La planilla responde desde una aplicación web de Google Apps Script. Su código está en `apps-script/opiniones.gs` y su dirección en `index.html`, en el atributo `data-endpoint` del formulario. Si cambias el código, publícalo en Implementar › Gestionar implementaciones › editar › Versión: nueva versión, así la dirección no cambia.
+
+`assets/js/opiniones.js` es una copia de respaldo. La página la muestra mientras carga la planilla o si la planilla no responde. Conviene ponerla al día de vez en cuando con las opiniones de la planilla.
 
 ## Publicar cambios
 

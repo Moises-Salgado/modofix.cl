@@ -126,22 +126,21 @@
           <p class="mf-reviews__empty" data-reviews-empty>Todavía no hay opiniones publicadas. La tuya puede ser la primera.</p>
         </div>
       </div>
-      <form class="mf-form" data-review novalidate aria-labelledby="mf-rf-h">
+      <form class="mf-form" data-review data-endpoint="https://script.google.com/macros/s/AKfycbzPN9hPIutGYqkovH_TmDwBywUtsBcqzPSH_3daGFgLfUOKAClLVMhQB3D2hR9eJs34yQ/exec" novalidate aria-labelledby="mf-rf-h">
         <h3 class="mf-form__h" id="mf-rf-h">Deja tu opinión</h3>
-        <div class="mf-field"><label for="op-nombre">Nombre</label><input id="op-nombre" name="nombre" type="text" autocomplete="given-name" required></div>
+        <div class="mf-field"><label for="op-nombre">Nombre</label><input id="op-nombre" name="nombre" type="text" autocomplete="name" maxlength="60" required></div>
         <fieldset class="mf-rating" aria-describedby="rating-text">
           <legend>Calificación</legend>
           <div class="mf-stars"><input type="radio" name="estrellas" id="estrella-1" value="1"><label class="mf-star" for="estrella-1"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.84 5.76 6.36.92-4.6 4.48 1.08 6.33L12 17.3l-5.68 2.99 1.08-6.33-4.6-4.48 6.36-.92z"></path></svg><span class="mf-sr">1 estrella</span></label><input type="radio" name="estrellas" id="estrella-2" value="2"><label class="mf-star" for="estrella-2"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.84 5.76 6.36.92-4.6 4.48 1.08 6.33L12 17.3l-5.68 2.99 1.08-6.33-4.6-4.48 6.36-.92z"></path></svg><span class="mf-sr">2 estrellas</span></label><input type="radio" name="estrellas" id="estrella-3" value="3"><label class="mf-star" for="estrella-3"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.84 5.76 6.36.92-4.6 4.48 1.08 6.33L12 17.3l-5.68 2.99 1.08-6.33-4.6-4.48 6.36-.92z"></path></svg><span class="mf-sr">3 estrellas</span></label><input type="radio" name="estrellas" id="estrella-4" value="4"><label class="mf-star" for="estrella-4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.84 5.76 6.36.92-4.6 4.48 1.08 6.33L12 17.3l-5.68 2.99 1.08-6.33-4.6-4.48 6.36-.92z"></path></svg><span class="mf-sr">4 estrellas</span></label><input type="radio" name="estrellas" id="estrella-5" value="5"><label class="mf-star" for="estrella-5"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.84 5.76 6.36.92-4.6 4.48 1.08 6.33L12 17.3l-5.68 2.99 1.08-6.33-4.6-4.48 6.36-.92z"></path></svg><span class="mf-sr">5 estrellas</span></label></div>
           <p class="mf-rating__text" id="rating-text" data-rating-text>Elige de 1 a 5 estrellas.</p>
         </fieldset>
-        <div class="mf-field"><label for="op-texto">Tu comentario</label><textarea id="op-texto" name="comentario" rows="4" required placeholder="Por ejemplo: qué le pasaba a tu equipo y cómo quedó."></textarea></div>
-        <button class="mf-btn mf-btn--teal" type="submit">Enviar opinión por WhatsApp</button>
-        <p class="mf-form__help" data-review-help aria-live="polite">Tu opinión nos llega por WhatsApp y la publicamos después de leerla.</p>
-        <div class="mf-result" data-review-result hidden>
-          <p class="mf-result__label">Tu opinión está lista</p>
-          <p class="mf-result__text" data-review-text></p>
-          <a class="mf-btn mf-btn--teal" data-review-link href="https://wa.me/56976013705" target="_blank" rel="noopener">Abrir WhatsApp con tu opinión</a>
-          <p class="mf-small">Si WhatsApp no se abre solo, usa el botón.</p>
+        <div class="mf-field"><label for="op-texto">Tu comentario</label><textarea id="op-texto" name="comentario" rows="4" maxlength="1000" required placeholder="Por ejemplo: qué le pasaba a tu equipo y cómo quedó."></textarea></div>
+        <div class="mf-hp" aria-hidden="true"><label for="op-web">No completes este campo</label><input id="op-web" name="web" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="mf-btn mf-btn--teal" type="submit">Publicar opinión</button>
+        <p class="mf-form__help" data-review-help aria-live="polite">Se publica al instante en esta página, con tu nombre tal como lo escribas.</p>
+        <div class="mf-result" data-review-result role="status" hidden>
+          <p class="mf-result__label" data-review-text></p>
+          <a class="mf-result__link" data-review-link href="#opiniones">Ver tu opinión</a>
         </div>
       </form>
     </div>

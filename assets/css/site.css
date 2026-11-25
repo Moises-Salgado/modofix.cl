@@ -596,3 +596,18 @@ body { margin: 0; }
     background: linear-gradient(180deg, #011A2E 0%, rgba(1, 26, 46, .92) 30%, rgba(1, 26, 46, .78) 45%, rgba(1, 26, 46, 0) 60%, rgba(1, 26, 46, 0) 92%, #011A2E 100%);
   }
 }
+
+/* ---------- opiniones publicadas al instante ---------- */
+.mf-hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.mf-review.is-new { border-color: var(--teal); box-shadow: inset 0 0 0 1px var(--teal); }
+.mf-review[tabindex="-1"]:focus { outline: none; }
+.mf-reviews__more {
+  margin-top: 12px; padding: 10px 16px; border: 1px solid var(--line-2); border-radius: 999px;
+  background: transparent; color: var(--text); font: inherit; font-size: 15px; font-weight: 500; cursor: pointer;
+}
+.mf-reviews__more:hover { border-color: var(--teal); }
+.mf-reviews__more:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.mf-form > .mf-btn--teal:disabled { opacity: .7; cursor: progress; }
+.mf-result__label { margin: 0; }
+.mf-result__link { display: inline-block; margin-top: 8px; font-size: 15px; color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+.mf-result__link:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
