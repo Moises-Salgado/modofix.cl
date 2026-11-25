@@ -41,13 +41,17 @@ function configurar() {
     hoja.getRange(1, 1, 1, COLUMNAS.length).setValues([COLUMNAS]).setFontWeight('bold');
   }
   hoja.setFrozenRows(1);
-  if (hoja.getLastRow() === 1 && PRIMERAS.length) {
+  if (ultimaFila_(hoja) === 1 && PRIMERAS.length) {
     hoja.getRange(2, 1, PRIMERAS.length, COLUMNAS.length).setValues(PRIMERAS);
   }
   hoja.getRange('A2:A').setNumberFormat('dd-mm-yyyy hh:mm');
   hoja.getRange('C2:C').setHorizontalAlignment('center');
   hoja.getRange('D2:D').setWrap(true);
-  hoja.getRange('E2:E').setDataValidation(SpreadsheetApp.newDataValidation().requireCheckbox().build());
+  // Las casillas solo van en las filas con opiniones: una casilla vacía cuenta como fila usada.
+  const ultima = ultimaFila_(hoja);
+  const sobran = hoja.getMaxRows() - ultima;
+  if (sobran > 0) hoja.getRange(ultima + 1, 5, sobran, 1).clearContent().clearDataValidations();
+  if (ultima >= 2) hoja.getRange(2, 5, ultima - 1, 1).setDataValidation(casilla_());
   [130, 170, 80, 520, 90, 90].forEach((ancho, i) => hoja.setColumnWidth(i + 1, ancho));
   CacheService.getScriptCache().remove('lista');
 }
@@ -100,7 +104,7 @@ function doPost(e) {
     }
 
     const hoja = hoja_();
-    const ultima = hoja.getLastRow();
+    const ultima = ultimaFila_(hoja);
     if (ultima > 1) {
       const desde = Math.max(2, ultima - 49);
       const clave = (nombre + '|' + comentario).toLowerCase();
@@ -110,7 +114,11 @@ function doPost(e) {
     }
 
     const id = Utilities.getUuid().slice(0, 8);
-    hoja.appendRow([ahora, texto_(nombre), estrellas, texto_(comentario), true, id]);
+    const fila = ultima + 1;
+    if (fila > hoja.getMaxRows()) hoja.insertRowsAfter(hoja.getMaxRows(), 100);
+    hoja.getRange(fila, 1, 1, COLUMNAS.length).setValues([[ahora, texto_(nombre), estrellas, texto_(comentario), true, id]]);
+    hoja.getRange(fila, 1).setNumberFormat('dd-mm-yyyy hh:mm');
+    hoja.getRange(fila, 5).setDataValidation(casilla_());
     props.setProperty('cuenta', JSON.stringify({ hora: hora, enHora: enHora + 1, dia: dia, enDia: enDia + 1 }));
     CacheService.getScriptCache().remove('lista');
 
@@ -130,7 +138,7 @@ function doPost(e) {
 
 function leer_() {
   const hoja = hoja_();
-  const filas = hoja.getLastRow() - 1;
+  const filas = ultimaFila_(hoja) - 1;
   if (filas < 1) return [];
   return hoja.getRange(2, 1, filas, COLUMNAS.length).getValues()
     .filter((f) => f[4] === true)
@@ -160,6 +168,21 @@ function avisar_(o) {
   } catch (err) {
     console.error('No se pudo enviar el aviso: ' + err);
   }
+}
+
+// Última fila con un nombre escrito (las casillas o formatos de filas vacías no cuentan).
+function ultimaFila_(hoja) {
+  const total = hoja.getLastRow();
+  if (total < 2) return Math.max(total, 1);
+  const nombres = hoja.getRange(2, 2, total - 1, 1).getValues();
+  for (let i = nombres.length - 1; i >= 0; i--) {
+    if (String(nombres[i][0]).trim()) return i + 2;
+  }
+  return 1;
+}
+
+function casilla_() {
+  return SpreadsheetApp.newDataValidation().requireCheckbox().build();
 }
 
 function hoja_() {
