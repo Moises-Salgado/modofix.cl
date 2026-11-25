@@ -54,15 +54,15 @@ Cada cambio que se sube a la rama `main` aparece en modofix.cl en uno o dos minu
 
 Los registros DNS de modofix.cl se administran en Hostinger (hPanel › Dominios › modofix.cl › DNS) y apuntan a GitHub Pages:
 
-| Tipo  | Nombre | Valor                    |
-|-------|--------|--------------------------|
-| A     | @      | 185.199.108.153          |
-| A     | @      | 185.199.109.153          |
-| A     | @      | 185.199.110.153          |
-| A     | @      | 185.199.111.153          |
-| CNAME | www    | moises-salgado.github.io |
+| Tipo  | Nombre | Contenido                    |
+|-------|--------|------------------------------|
+| ALIAS | @      | moises-salgado.github.io     |
+| CNAME | www    | moises-salgado.github.io     |
+| TXT   | @      | google-site-verification=…   |
 
-No debe quedar ningún otro registro A, AAAA o CNAME para `@` ni para `www`. Los del creador de sitios de Hostinger (A a 77.37.42.130 y 89.116.213.102, AAAA que empiezan con 2a02:4780 y CNAME de www a www.modofix.cl.cdn.hstgr.net) se borran al hacer el cambio. Si Hostinger no deja borrarlos, primero hay que desconectar el dominio del sitio del creador.
+Antes, el ALIAS y el CNAME apuntaban al creador de sitios de Hostinger (`modofix.cl.cdn.hstgr.net` y `www.modofix.cl.cdn.hstgr.net`); se editan, no hace falta borrarlos. El TXT es la verificación de Google Search Console y se deja como está. Si Hostinger no deja editarlos o los vuelve a cambiar, primero hay que desactivar su CDN o desconectar el dominio del sitio del creador.
+
+En vez del ALIAS también sirven cuatro registros A para `@`: 185.199.108.153, 185.199.109.153, 185.199.110.153 y 185.199.111.153. No pueden convivir con el ALIAS.
 
 En GitHub, la configuración está en Settings › Pages: se publica desde la rama `main`, carpeta raíz, con el dominio personalizado `modofix.cl` (lo fija el archivo `CNAME`). Cuando el DNS ya apunta a GitHub y aparece el certificado, se marca «Enforce HTTPS» en esa misma página.
 
