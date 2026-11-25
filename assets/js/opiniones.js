@@ -13,4 +13,5 @@
   Mientras la lista esté vacía, la página muestra "Todavía no hay opiniones publicadas".
 */
 window.MODOFIX_OPINIONES = [
+  { nombre: 'Rolando Yáñez', estrellas: 5, comentario: 'Estaba lento mi Notebook, por lo que pedí un formateo y también me lo optimizó quedando mucho más rápido, junto con la instalación de programas básicos. Muy bueno el trabajo, recomendable.', fecha: '2026-11' },
 ];
