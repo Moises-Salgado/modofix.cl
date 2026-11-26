@@ -602,6 +602,27 @@ body { margin: 0; }
   .mf-fig { width: 56%; }
 }
 
+/* ---------- preguntas frecuentes ---------- */
+.mf-faq { padding-top: 112px; }
+.mf-faq__in { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 56px; align-items: start; }
+.mf-faq__list { border-top: 1px solid var(--line); }
+.mf-faq__item { border-bottom: 1px solid var(--line); }
+.mf-faq__item summary {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 44px; padding: 18px 0;
+  font-size: 18px; font-weight: 500; line-height: 1.35; color: var(--text); cursor: pointer; list-style: none;
+}
+.mf-faq__item summary::-webkit-details-marker { display: none; }
+.mf-faq__item summary::after { content: '+'; flex: none; font-size: 24px; font-weight: 400; line-height: 1; color: var(--teal); transition: transform .2s ease; }
+.mf-faq__item[open] summary::after { transform: rotate(45deg); }
+.mf-faq__item summary:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 4px; }
+.mf-faq__item p { max-width: 62ch; padding: 0 0 20px; font-size: 16px; line-height: 1.6; color: var(--text-2); }
+@media (max-width: 820px) {
+  .mf-faq { padding-top: 72px; }
+  .mf-faq__in { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
+  .mf-faq__item summary { font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) { .mf-faq__item summary::after { transition: none; } }
+
 /* ---------- opiniones publicadas al instante ---------- */
 .mf-hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .mf-review.is-new { border-color: var(--teal); box-shadow: inset 0 0 0 1px var(--teal); }
