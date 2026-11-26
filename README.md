@@ -6,7 +6,7 @@ Es una sola página hecha con HTML, CSS y JavaScript, sin compilación. Se publi
 
 ## Qué hay en la página
 
-- **Portada:** el despiece animado del notebook y el celular. Las piezas se levantan al pasar el cursor y muestran su nombre y precio. De fondo va un video que se puede pausar.
+- **Portada:** el despiece animado del notebook y el celular. Las piezas se levantan al pasar el cursor y muestran su nombre y precio. De fondo va una llama que gira la cabeza hacia el cursor (o el dedo, en celular).
 - **Servicios y precios:** un buscador que entiende frases como «se calienta» o «pantalla rota», con filtros por categoría y uso con teclado (↑ ↓, Enter, Esc). Los servicios elegidos arman el mensaje para WhatsApp y se recuerdan si la persona vuelve.
 - **Opiniones:** un formulario de 1 a 5 estrellas que publica la opinión al instante. Las opiniones se guardan en una planilla de Google y te llega un correo con cada una.
 - **Dónde estamos:** dirección, WhatsApp, correo y enlace a Google Maps.
@@ -18,10 +18,10 @@ Es una sola página hecha con HTML, CSS y JavaScript, sin compilación. Se publi
 index.html               la página (aquí está la lista de servicios)
 404.html                 página para enlaces que no existen
 assets/css/site.css      estilos
-assets/js/app.js         buscador, mensaje de WhatsApp, video y opiniones
+assets/js/app.js         buscador, mensaje de WhatsApp, la llama y opiniones
 assets/js/opiniones.js   copia de respaldo de las opiniones
 apps-script/opiniones.gs código de la planilla de opiniones (Google Apps Script)
-assets/video/            video de portada (MP4) y su imagen fija
+assets/video/            video de la llama (MP4) y su imagen fija
 assets/img/              logo, íconos e imagen para compartir (og.jpg)
 CNAME                    dominio de GitHub Pages (modofix.cl)
 robots.txt, sitemap.xml  para buscadores
@@ -79,4 +79,4 @@ En GitHub, la configuración está en Settings › Pages: se publica desde la ra
 ## Fuentes y video
 
 - **Tipografía:** Golos Text, desde Google Fonts.
-- **Video de portada:** adaptado de un fondo de MotionSites, con el brillo, las flechas y las estrellas del original pero en turquesa. Es un bucle sin corte de 9 segundos, sin audio: 1920×1080 para computador y 1280×720 para celular, más una imagen fija para cuando se pausa. Antes de usarlo en el sitio público, confirma que tu plan de MotionSites lo permite.
+- **Video de portada:** la llama del ejemplo «SynapseX» de MotionSites, recoloreada en turquesa. Son 4 segundos de la llama girando la cabeza de izquierda a derecha; no se reproduce: la página salta al cuadro que mira hacia el cursor, y para arriba o abajo estira o encoge un poco el cuello. Va en 768 px de alto para computador y 480 px para celular, más una imagen fija. Si el servidor no entrega el video por partes, la página lo descarga completo una vez y lo usa desde la memoria.
