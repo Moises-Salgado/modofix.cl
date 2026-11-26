@@ -440,38 +440,6 @@
     else small.textContent = items.length + ' servicios, desde ' + fmt(prices[0]);
   });
 
-  /* ---------- datos para buscadores (schema.org), armados desde la misma lista ---------- */
-  if (rows.length) {
-    const offer = (r) => {
-      const o = { '@type': 'Offer', priceCurrency: 'CLP', itemOffered: { '@type': 'Service', name: r.name, description: r.desc } };
-      if (r.desde) o.priceSpecification = { '@type': 'PriceSpecification', minPrice: r.price, priceCurrency: 'CLP' };
-      else o.price = r.price;
-      return o;
-    };
-    const ld = {
-      '@context': 'https://schema.org',
-      '@type': 'LocalBusiness',
-      '@id': 'https://modofix.cl/#negocio',
-      name: 'ModoFix',
-      description: 'Servicio técnico de computadores, notebooks y celulares en San Pedro de la Paz.',
-      url: 'https://modofix.cl/',
-      telephone: '+56976013705',
-      email: 'moises99.salgado@gmail.com',
-      image: 'https://modofix.cl/assets/img/og.jpg',
-      logo: 'https://modofix.cl/assets/img/modofix-mark.png',
-      address: { '@type': 'PostalAddress', streetAddress: 'Las Lengas 290', addressLocality: 'San Pedro de la Paz', addressRegion: 'Región del Biobío', addressCountry: 'CL' },
-      hasOfferCatalog: {
-        '@type': 'OfferCatalog',
-        name: 'Servicios y precios',
-        itemListElement: groups.map((g) => ({ '@type': 'OfferCatalog', name: g.name, itemListElement: rows.filter((r) => r.cat === g.cat).map(offer) }))
-      }
-    };
-    const s = document.createElement('script');
-    s.type = 'application/ld+json';
-    s.textContent = JSON.stringify(ld);
-    document.head.appendChild(s);
-  }
-
   /* ---------- opiniones: se leen y se publican en la planilla de Google (data-endpoint del formulario) ---------- */
   const starRow = (n) => {
     const el = document.createElement('span');

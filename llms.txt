@@ -1,0 +1,36 @@
+# ModoFix
+
+> Servicio técnico de computadores, notebooks y celulares en San Pedro de la Paz, Concepción (Chile).
+
+- Dirección: Las Lengas 290, San Pedro de la Paz, Región del Biobío
+- WhatsApp: +56 9 7601 3705 (https://wa.me/56976013705)
+- Correo: moises99.salgado@gmail.com
+- Atención: por WhatsApp o directo en el lugar
+- Sitio: https://modofix.cl/
+
+## Servicios y precios (pesos chilenos)
+
+### Computadores y notebooks
+- Diagnóstico PC y Notebook: $9.990. Revisión inicial, pruebas básicas e identificación de próximos pasos.
+- Limpieza y cambio de pasta térmica: $14.990. Limpieza interna de componentes, pasta térmica para la CPU y thermal putty.
+- Optimización PC/Notebook: $12.990. Optimizar rendimiento, gestionar inicio, liberar espacio.
+- Formateo PC + Windows + Programas básicos: $19.990. Instalación limpia + programas básicos (navegador, lector PDF, etc.).
+- Instalación de Windows: $9.990. Instalación limpia, controladores y activación permanente.
+- Instalación Microsoft 365: $9.990. Instalación y activación de programas (Word, Excel, PowerPoint, etc.).
+- Pack instalación Windows + Microsoft 365: $14.990. Instalación de Windows y programas de Microsoft más activación permanente.
+- Instalación de Linux: $14.990. Instalación de cualquier distribución de Linux.
+- Instalación de programas: $9.990. Instalación de cualquier programa.
+
+### Componentes y configuración
+- Cambio o ampliación de RAM: $4.990. Cambio de RAM mala o agregar más memoria RAM.
+- Reparación de bisagras: desde $9.990. Arreglo de bisagras rotas o dañadas de notebook o laptop.
+- Instalación de disco duro (HDD) o disco sólido (SSD): $4.990. Instalación física de disco duro o disco sólido.
+- Instalación de HDD/SSD con migración de datos: $14.990. Instalación física de disco más traspaso de datos a la nueva unidad.
+- Instalación Dual Boot: $14.990. Creación de arranque de dos sistemas operativos en PC o notebook.
+- Partición de discos: $9.990. Redimensionado y división de unidades de almacenamiento.
+
+### Celulares
+- Optimización de celular: $9.990. Optimizar rendimiento, revisar almacenamiento, aplicaciones y configuración.
+- Formateo de celulares: $9.990. Restablecimiento de fábrica, eliminación de bloqueos y virus.
+- Configuración de respaldo: $9.990. Copia de seguridad de información, aplicaciones, contactos y juegos.
+- Cambio de pantalla de celular: desde $29.990. Cambio de pantalla quebrada a una completamente nueva.

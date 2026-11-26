@@ -80,3 +80,11 @@ En GitHub, la configuración está en Settings › Pages: se publica desde la ra
 
 - **Tipografía:** Golos Text, desde Google Fonts.
 - **Video de portada:** la llama del ejemplo «SynapseX» de MotionSites, recoloreada en turquesa. Son 4 segundos de la llama girando la cabeza de izquierda a derecha; no se reproduce: la página salta al cuadro que mira hacia el cursor, y para arriba o abajo estira o encoge un poco el cuello. Va en 768 px de alto para computador y 480 px para celular, más una imagen fija. Si el servidor no entrega el video por partes, la página lo descarga completo una vez y lo usa desde la memoria.
+
+## Buscadores (SEO)
+
+- Título y descripción con «servicio técnico», los equipos y San Pedro de la Paz.
+- Datos del negocio (schema.org LocalBusiness: dirección, teléfono, zona y la lista de servicios con precios) escritos en el HTML, armados desde la misma lista de servicios.
+- `sitemap.xml` con la fecha de la última publicación y `robots.txt` que lo apunta.
+- `llms.txt`: resumen en texto para buscadores con IA.
+- Fuera de la página: Google Search Console (enviar el sitemap) y el Perfil de Empresa en Google, que es lo que más pesa para salir en el mapa.
