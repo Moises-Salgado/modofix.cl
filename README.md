@@ -87,4 +87,5 @@ En GitHub, la configuración está en Settings › Pages: se publica desde la ra
 - Datos del negocio (schema.org LocalBusiness: dirección, teléfono, zona y la lista de servicios con precios) escritos en el HTML, armados desde la misma lista de servicios.
 - `sitemap.xml` con la fecha de la última publicación y `robots.txt` que lo apunta.
 - `llms.txt`: resumen en texto para buscadores con IA.
+- Preguntas frecuentes en el inicio y cuatro páginas por servicio (formateo, cambio de pantalla de celular, limpieza y pasta térmica, disco SSD y RAM), armadas en `build.py` desde la misma lista de precios. Cada una tiene su título, descripción y datos para Google, y van en el sitemap.
 - Fuera de la página: Google Search Console (enviar el sitemap) y el Perfil de Empresa en Google, que es lo que más pesa para salir en el mapa.
