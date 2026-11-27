@@ -1,6 +1,6 @@
 # Contexto del proyecto modofix.cl
 
-Este archivo guarda el contexto de trabajo de modofix.cl para retomarlo en cualquier conversación o sesión de Claude Code, sin mezclarlo con otros proyectos. Si cambia algo importante, actualízalo aquí. Hay una copia en el Proyecto «Modofix» de Claude (contexto-modofix.md).
+Este archivo guarda el contexto de trabajo de modofix.cl para retomarlo en cualquier conversación o sesión de Claude Code, sin mezclarlo con otros proyectos. Si cambia algo importante, actualízalo aquí. Hay una copia en el Proyecto «Modofix» de Claude (contexto-modofix.md), que leen todas las conversaciones de ese Proyecto.
 
 ## Qué es
 
@@ -14,7 +14,8 @@ ModoFix es el servicio técnico de Moisés Salgado: computadores, notebooks y ce
 - Trabajar de forma autónoma: preguntar solo al principio o si es muy necesario. Mostrar una vista previa antes de cambios grandes de diseño.
 - Las opiniones publicadas no se borran nunca al cambiar el sitio.
 - No agregar automatizaciones (GitHub Actions u otras) sin permiso explícito.
-- Este repositorio es de la cuenta de GitHub **Moises-Salgado**. Moisés tiene otra cuenta (Mig8ASB) en otro computador: no mezclarlas.
+- **En este proyecto se usa solo la cuenta de GitHub Moises-Salgado** (dueña de este repositorio). Moisés tiene otra cuenta (Mig8ASB) en otro computador: no usarla aquí, y no usar Moises-Salgado en chats o proyectos que no sean ModoFix.
+- **Avisarle a Moisés cuándo conviene abrir un chat nuevo** dentro del Proyecto «Modofix» de Claude: al terminar una etapa o empezar otra (por ejemplo, pasar a marketing), al cambiar de tema (por ejemplo, crear una llama propia) o cuando la conversación ya esté muy larga. Antes de avisar, dejar este archivo y el documento del Proyecto al día para que el chat nuevo parta con todo.
 - No entrar contraseñas por él; las verificaciones de Google las hace él.
 
 ## Cómo está hecho
@@ -58,7 +59,8 @@ Pendiente:
 - Verificación del Perfil de Empresa (la hace Moisés con Google).
 - Perfiles en 2x3.cl y Cronoshare (los textos ya se le entregaron).
 - Revisar en unas semanas Search Console (Rendimiento) para ver qué búsquedas traen visitas.
-- Después: marketing (plugin «Marketing» instalado en Claude).
+- Después: marketing (plugin «Marketing» instalado en Claude), en un chat nuevo del Proyecto.
+- Idea de Moisés: crear su propia llama (o personaje) para la portada, en un chat aparte.
 
 ## Respaldos
 
