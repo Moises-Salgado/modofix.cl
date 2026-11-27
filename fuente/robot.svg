@@ -1,0 +1,155 @@
+<svg class="mf-robot__svg" viewBox="0 0 520 480" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rb-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E4A72"/>
+      <stop offset=".55" stop-color="#06304F"/>
+      <stop offset="1" stop-color="#021E35"/>
+    </linearGradient>
+    <linearGradient id="rb-body-rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#01CCBD" stop-opacity=".15"/>
+      <stop offset=".55" stop-color="#01CCBD" stop-opacity="0"/>
+      <stop offset="1" stop-color="#01CCBD" stop-opacity=".9"/>
+    </linearGradient>
+    <linearGradient id="rb-neck" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#03182B"/>
+      <stop offset=".35" stop-color="#2A5F80"/>
+      <stop offset=".6" stop-color="#0B3554"/>
+      <stop offset="1" stop-color="#021526"/>
+    </linearGradient>
+    <radialGradient id="rb-shell" cx=".36" cy=".26" r=".9">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".42" stop-color="#E3EEF3"/>
+      <stop offset=".8" stop-color="#A9C0CD"/>
+      <stop offset="1" stop-color="#7F9AAB"/>
+    </radialGradient>
+    <linearGradient id="rb-rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#01CCBD" stop-opacity="0"/>
+      <stop offset=".62" stop-color="#01CCBD" stop-opacity="0"/>
+      <stop offset="1" stop-color="#3FF5E6" stop-opacity="1"/>
+    </linearGradient>
+    <radialGradient id="rb-ear" cx=".4" cy=".35" r=".75">
+      <stop offset="0" stop-color="#F4FAFC"/>
+      <stop offset=".7" stop-color="#9DB6C4"/>
+      <stop offset="1" stop-color="#637F92"/>
+    </radialGradient>
+    <linearGradient id="rb-visor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A2B45"/>
+      <stop offset=".5" stop-color="#031527"/>
+      <stop offset="1" stop-color="#010B16"/>
+    </linearGradient>
+    <linearGradient id="rb-glare" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="rb-eye" cx=".5" cy=".42" r=".6">
+      <stop offset="0" stop-color="#E9FFFD"/>
+      <stop offset=".45" stop-color="#5FF6EA"/>
+      <stop offset="1" stop-color="#01CCBD"/>
+    </radialGradient>
+    <radialGradient id="rb-bulb" cx=".38" cy=".34" r=".7">
+      <stop offset="0" stop-color="#F2FFFE"/>
+      <stop offset=".5" stop-color="#4FF2E4"/>
+      <stop offset="1" stop-color="#01A89C"/>
+    </radialGradient>
+    <radialGradient id="rb-halo" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#01CCBD" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#01CCBD" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rb-back" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#01CCBD" stop-opacity=".22"/>
+      <stop offset=".6" stop-color="#01CCBD" stop-opacity=".06"/>
+      <stop offset="1" stop-color="#01CCBD" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="rb-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="rb-visor-clip"><rect x="158" y="118" width="204" height="120" rx="52"/></clipPath>
+  </defs>
+
+  <!-- luz de fondo -->
+  <ellipse cx="270" cy="200" rx="250" ry="210" fill="url(#rb-back)"/>
+
+  <!-- cuerpo -->
+  <g data-rb="body">
+    <path d="M58 480 C58 398 116 352 206 342 L314 342 C404 352 462 398 462 480 Z" fill="url(#rb-body)"/>
+    <path d="M58 480 C58 398 116 352 206 342 L314 342 C404 352 462 398 462 480" fill="none" stroke="url(#rb-body-rim)" stroke-width="3"/>
+    <!-- costuras de los hombros -->
+    <path d="M150 366 C138 396 132 436 132 480" fill="none" stroke="#01CCBD" stroke-opacity=".28" stroke-width="2"/>
+    <path d="M370 366 C382 396 388 436 388 480" fill="none" stroke="#01CCBD" stroke-opacity=".45" stroke-width="2"/>
+    <!-- placa del pecho con la llave -->
+    <rect x="212" y="392" width="96" height="66" rx="20" fill="#021A2E" stroke="#01CCBD" stroke-opacity=".55" stroke-width="2"/>
+    <g data-rb="badge" filter="url(#rb-glow)">
+      <path d="M241 447 L269 419" stroke="#01CCBD" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="275" cy="413" r="14" fill="#01CCBD"/>
+      <rect x="276" y="394" width="11" height="20" rx="2" fill="#021A2E" transform="rotate(45 281.5 404)"/>
+    </g>
+    <g data-rb="leds">
+      <circle cx="160" cy="420" r="4" fill="#01CCBD"/>
+      <circle cx="160" cy="436" r="4" fill="#01CCBD" opacity=".45"/>
+      <circle cx="160" cy="452" r="4" fill="#01CCBD" opacity=".2"/>
+    </g>
+    <!-- cuello del cuerpo -->
+    <ellipse cx="260" cy="346" rx="66" ry="15" fill="#011526"/>
+    <ellipse cx="260" cy="343" rx="66" ry="15" fill="none" stroke="#01CCBD" stroke-opacity=".7" stroke-width="2"/>
+  </g>
+
+  <!-- cuello -->
+  <g data-rb="neck">
+    <rect x="232" y="250" width="56" height="96" rx="10" fill="url(#rb-neck)"/>
+    <rect x="226" y="276" width="68" height="10" rx="5" fill="#0D3B5C" stroke="#01CCBD" stroke-opacity=".5" stroke-width="1.5"/>
+    <rect x="226" y="302" width="68" height="10" rx="5" fill="#0D3B5C" stroke="#01CCBD" stroke-opacity=".35" stroke-width="1.5"/>
+  </g>
+
+  <!-- cabeza -->
+  <g data-rb="head">
+    <!-- antena (va detrás de la cabeza) -->
+    <g data-rb="antenna">
+      <path d="M260 92 L260 40" stroke="#8FA8B7" stroke-width="6" stroke-linecap="round"/>
+      <path d="M260 92 L260 40" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="2" stroke-linecap="round" transform="translate(-1 0)"/>
+      <circle data-rb="halo" cx="260" cy="30" r="30" fill="url(#rb-halo)"/>
+      <circle cx="260" cy="30" r="13" fill="url(#rb-bulb)"/>
+      <circle cx="255" cy="25" r="4" fill="#FFFFFF" opacity=".85"/>
+    </g>
+    <!-- orejas -->
+    <g data-rb="ear-l">
+      <rect x="104" y="152" width="40" height="72" rx="18" fill="url(#rb-ear)"/>
+      <rect x="112" y="166" width="16" height="44" rx="8" fill="#012541"/>
+      <rect x="116" y="174" width="8" height="28" rx="4" fill="#01CCBD" opacity=".75"/>
+    </g>
+    <g data-rb="ear-r">
+      <rect x="376" y="152" width="40" height="72" rx="18" fill="url(#rb-ear)"/>
+      <rect x="392" y="166" width="16" height="44" rx="8" fill="#012541"/>
+      <rect x="396" y="174" width="8" height="28" rx="4" fill="#01CCBD"/>
+      <rect x="396" y="174" width="8" height="28" rx="4" fill="#01CCBD" filter="url(#rb-glow)" opacity=".7"/>
+    </g>
+    <!-- casco -->
+    <rect x="130" y="84" width="260" height="196" rx="78" fill="url(#rb-shell)"/>
+    <rect x="130" y="84" width="260" height="196" rx="78" fill="none" stroke="url(#rb-rim)" stroke-width="4"/>
+    <rect x="131.5" y="85.5" width="257" height="193" rx="77" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="1.5"/>
+    <g data-rb="shine">
+      <path d="M176 112 C204 96 248 92 282 96" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+      <circle cx="306" cy="98" r="4.5" fill="#FFFFFF" opacity=".9"/>
+    </g>
+    <!-- tornillos -->
+    <g fill="#8FA8B7">
+      <circle cx="160" cy="250" r="5"/>
+      <circle cx="360" cy="250" r="5"/>
+    </g>
+    <path d="M155 250 l10 0 M355 250 l10 0" stroke="#5B7486" stroke-width="1.6" data-rb="screws"/>
+    <!-- cara: visor, ojos y boca (se desplazan más que el casco para dar volumen) -->
+    <g data-rb="face">
+      <rect x="152" y="112" width="216" height="132" rx="58" fill="#5E7A8C" opacity=".35"/>
+      <rect x="158" y="118" width="204" height="120" rx="52" fill="url(#rb-visor)"/>
+      <rect x="158" y="118" width="204" height="120" rx="52" fill="none" stroke="#01CCBD" stroke-opacity=".35" stroke-width="2"/>
+      <g clip-path="url(#rb-visor-clip)">
+        <g data-rb="eyes" filter="url(#rb-glow)">
+          <g data-rb="eye-l"><rect x="196" y="150" width="34" height="48" rx="17" fill="url(#rb-eye)"/></g>
+          <g data-rb="eye-r"><rect x="290" y="150" width="34" height="48" rx="17" fill="url(#rb-eye)"/></g>
+          <path data-rb="mouth" d="M244 214 Q260 224 276 214" fill="none" stroke="#01CCBD" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <path data-rb="glare" d="M150 118 L232 118 L176 250 L150 250 Z" fill="url(#rb-glare)" opacity=".55"/>
+      </g>
+    </g>
+  </g>
+</svg>

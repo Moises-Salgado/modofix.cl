@@ -15,7 +15,7 @@ ModoFix es el servicio técnico de Moisés Salgado: computadores, notebooks y ce
 - Las opiniones publicadas no se borran nunca al cambiar el sitio.
 - No agregar automatizaciones (GitHub Actions u otras) sin permiso explícito.
 - **En este proyecto se usa solo la cuenta de GitHub Moises-Salgado** (dueña de este repositorio). Moisés tiene otra cuenta (Mig8ASB) en otro computador: no usarla aquí, y no usar Moises-Salgado en chats o proyectos que no sean ModoFix.
-- **Avisarle a Moisés cuándo conviene abrir un chat nuevo** dentro del Proyecto «Modofix» de Claude: al terminar una etapa o empezar otra (por ejemplo, pasar a marketing), al cambiar de tema (por ejemplo, crear una llama propia) o cuando la conversación ya esté muy larga. Antes de avisar, dejar este archivo y el documento del Proyecto al día para que el chat nuevo parta con todo.
+- **Avisarle a Moisés cuándo conviene abrir un chat nuevo** dentro del Proyecto «Modofix» de Claude: al terminar una etapa o empezar otra (por ejemplo, pasar a marketing), al cambiar de tema (por ejemplo, rediseñar el robot de la portada) o cuando la conversación ya esté muy larga. Antes de avisar, dejar este archivo y el documento del Proyecto al día para que el chat nuevo parta con todo.
 - No entrar contraseñas por él; las verificaciones de Google las hace él.
 
 ## Cómo está hecho
@@ -25,7 +25,8 @@ ModoFix es el servicio técnico de Moisés Salgado: computadores, notebooks y ce
 - Los archivos publicados (`index.html`, `404.html`, páginas por servicio, `assets/css/site.css`, `assets/js/app.js`, `sitemap.xml`, `robots.txt`, `llms.txt`) **se generan** con `python3 fuente/build.py`. No editarlos a mano: editar las fuentes y volver a generar.
 - Fuentes en `fuente/`:
   - `build.py`: arma todo el sitio (textos, preguntas frecuentes, páginas por servicio, datos para Google).
-  - `app.src.js`: script del sitio (buscador de servicios, mensaje de WhatsApp, la llama, opiniones).
+  - `app.src.js`: script del sitio (buscador de servicios, mensaje de WhatsApp, el robot de la portada, opiniones).
+  - `robot.svg`: dibujo del robot de la portada, por capas (`data-rb`), que `build.py` inserta en el HTML.
   - `site-extra.css`: estilos propios encima del diseño base `diseno/pro/css/pro-2c.css`.
   - `diseno/`: lista de servicios y precios (`gen.py`) y el diseño base de donde salen los estilos y el dibujo del despiece.
   - `test.js` y `test-opiniones.js`: pruebas con Puppeteer contra un servidor local (puertos 8766 con soporte de rangos y 8765).
@@ -34,9 +35,8 @@ ModoFix es el servicio técnico de Moisés Salgado: computadores, notebooks y ce
 
 ## Portada
 
-- Llama con lentes que gira la cabeza hacia el cursor (o el dedo en celular). Video del ejemplo «SynapseX» de MotionSites, recoloreado en turquesa: `assets/video/llama-768.mp4` (computador), `llama-480.mp4` (celular) y `llama-poster.jpg`. 4 segundos, 24 cuadros por segundo (97 cuadros), con un cuadro completo cada 3 para saltar rápido.
-- No se reproduce: el script salta al cuadro que mira hacia el cursor; arriba/abajo es una imitación (el cuello se estira o encoge un poco). Si el servidor no entrega el video por partes, se descarga completo y se usa desde la memoria.
-- Pendiente de Moisés: confirmar que las condiciones de MotionSites permiten usar el video (su cuenta allá es gratuita).
+- Robot de ModoFix (dibujo propio, sin licencias de terceros) que mira hacia el cursor o el dedo: casco blanco brillante, visor oscuro con ojos y sonrisa turquesa, antena con luz, orejas, cuello y cuerpo azul marino con la llave en el pecho. Está en `fuente/robot.svg` y lo mueve `app.src.js`: cada capa se desplaza según su profundidad (cara, ojos, brillo), así mira a los lados y arriba/abajo. Respira, parpadea, la antena rebota, sonríe con el botón principal y las piezas, mira a su alrededor si el cursor está quieto 6 s y en celular mira a los lados al entrar. Con «reducir movimiento» queda quieto.
+- Reemplazó a la llama de MotionSites (nov. 2026). Sus videos siguen en `assets/video/` sin usarse, por si se quiere volver atrás.
 - Delante va el dibujo del notebook y celular desarmados (las piezas muestran nombre y precio).
 
 ## Opiniones
@@ -60,7 +60,6 @@ Pendiente:
 - Perfiles en 2x3.cl y Cronoshare (los textos ya se le entregaron).
 - Revisar en unas semanas Search Console (Rendimiento) para ver qué búsquedas traen visitas.
 - Después: marketing (plugin «Marketing» instalado en Claude), en un chat nuevo del Proyecto.
-- Idea de Moisés: crear su propia llama (o personaje) para la portada, en un chat aparte.
 
 ## Respaldos
 

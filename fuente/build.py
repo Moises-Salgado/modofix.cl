@@ -30,6 +30,12 @@ def mf(s):
 
 
 # ---------------- hero drawing ----------------
+def robot():
+    """Robot de la portada: dibujo SVG por capas que app.src.js mueve hacia el cursor."""
+    src = open(os.path.join(os.path.dirname(__file__), 'robot.svg'), encoding='utf-8').read()
+    return re.sub(r'\s*<!--.*?-->', '', src.replace(' xmlns="http://www.w3.org/2000/svg"', '')).strip()
+
+
 def art():
     inner = G.ART['inner_hover'].replace('dw-nb dw-part dw-part--equipo', 'dw-nb')
     inner = re.sub(r'<g class="dw-lead dw-lead--equipo">.*?</g>', '', inner)
@@ -464,11 +470,8 @@ def index():
   <section class="mf-hero" aria-labelledby="mf-h1">
     <div class="mf-hero__bg" aria-hidden="true">
       <div class="mf-hero__stage">
-        <div class="mf-llama" data-llama>
-          <video class="mf-llama__video" muted playsinline preload="auto" disablepictureinpicture poster="assets/video/llama-poster.jpg" tabindex="-1">
-            <source src="assets/video/llama-768.mp4" type="video/mp4" media="(min-width: 821px)">
-            <source src="assets/video/llama-480.mp4" type="video/mp4">
-          </video>
+        <div class="mf-robot" data-robot>
+          {robot()}
         </div>
       </div>
     </div>

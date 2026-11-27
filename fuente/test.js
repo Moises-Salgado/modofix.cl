@@ -1,7 +1,7 @@
 // Local check of the production site: screenshots + interaction tests (no network: Golos is mapped to local Inter).
 const puppeteer = require('/opt/npm-tools/node_modules/puppeteer');
 const OUT = require('path').join(__dirname, 'capturas') + '/';
-const URL = 'http://127.0.0.1:8766/'; // servidor con Range: el video de la llama necesita poder saltar de cuadro
+const URL = 'http://127.0.0.1:8766/';
 const FONT = `@font-face { font-family: 'Golos Text'; src: local('Inter'); font-weight: 400; }
 @font-face { font-family: 'Golos Text'; src: local('Inter Medium'), local('Inter'); font-weight: 500; }
 @font-face { font-family: 'Golos Text'; src: local('Inter SemiBold'), local('Inter'); font-weight: 600; }
@@ -36,7 +36,7 @@ const FONT = `@font-face { font-family: 'Golos Text'; src: local('Inter'); font-
   const res = {};
   res.docHeight = await d.evaluate(() => document.documentElement.scrollHeight);
   res.hScroll = await d.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
-  res.llama = await d.evaluate(() => { const v = document.querySelector('.mf-llama__video'); return v ? { paused: v.paused, muted: v.muted, rs: v.readyState, src: v.currentSrc.split('/').pop() } : null; });
+  res.robot = await d.evaluate(() => { const r = document.querySelector('[data-robot] svg'); return r ? { layers: r.querySelectorAll('[data-rb]').length, w: Math.round(r.getBoundingClientRect().width) } : null; });
   // search
   await d.focus('#mf-q');
   await d.keyboard.type('se calienta');
@@ -78,15 +78,15 @@ const FONT = `@font-face { font-family: 'Golos Text'; src: local('Inter'); font-
   await new Promise((r) => setTimeout(r, 700));
   res.ramTag = await d.evaluate(() => getComputedStyle(document.querySelector('.mf-tag--ram')).opacity);
   await d.screenshot({ path: OUT + 'd-hover.png', clip: { x: 640, y: 60, width: 760, height: 660 } });
-  // la llama mira hacia el cursor
-  const llamaT = () => d.evaluate(() => document.querySelector('.mf-llama__video').currentTime);
-  await d.mouse.move(60, 420, { steps: 6 });
+  // el robot mira hacia el cursor: la cara se corre hacia el lado del cursor (y hacia arriba o abajo)
+  const faceAt = () => d.evaluate(() => { const m = document.querySelector('[data-rb="face"]').transform.baseVal.consolidate().matrix; return { x: m.e, y: m.f }; });
+  await d.mouse.move(60, 120, { steps: 6 });
   await new Promise((r) => setTimeout(r, 1400));
-  const tLeft = await llamaT();
-  await d.mouse.move(1400, 420, { steps: 6 });
+  const fA = await faceAt();
+  await d.mouse.move(1438, 880, { steps: 6 });
   await new Promise((r) => setTimeout(r, 1400));
-  const tRight = await llamaT();
-  res.llamaFollow = { left: tLeft.toFixed(2), right: tRight.toFixed(2), ok: tLeft < 1 && tRight > 2.5 };
+  const fB = await faceAt();
+  res.robotFollow = { upLeft: fA, downRight: fB, ok: fB.x - fA.x > 15 && fB.y - fA.y > 10 };
   // review form: empty submit, then full
   await d.evaluate(() => document.querySelector('#opiniones').scrollIntoView());
   await d.click('[data-review] button[type="submit"]');

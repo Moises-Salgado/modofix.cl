@@ -6,7 +6,7 @@ Es una sola página hecha con HTML, CSS y JavaScript, sin compilación. Se publi
 
 ## Qué hay en la página
 
-- **Portada:** el despiece animado del notebook y el celular. Las piezas se levantan al pasar el cursor y muestran su nombre y precio. De fondo va una llama que gira la cabeza hacia el cursor (o el dedo, en celular).
+- **Portada:** el despiece animado del notebook y el celular. Las piezas se levantan al pasar el cursor y muestran su nombre y precio. De fondo va el robot de ModoFix, que mira hacia el cursor (o el dedo, en celular).
 - **Servicios y precios:** un buscador que entiende frases como «se calienta» o «pantalla rota», con filtros por categoría y uso con teclado (↑ ↓, Enter, Esc). Los servicios elegidos arman el mensaje para WhatsApp y se recuerdan si la persona vuelve.
 - **Opiniones:** un formulario de 1 a 5 estrellas que publica la opinión al instante. Las opiniones se guardan en una planilla de Google y te llega un correo con cada una.
 - **Dónde estamos:** dirección, WhatsApp, correo y enlace a Google Maps.
@@ -18,10 +18,10 @@ Es una sola página hecha con HTML, CSS y JavaScript, sin compilación. Se publi
 index.html               la página (aquí está la lista de servicios)
 404.html                 página para enlaces que no existen
 assets/css/site.css      estilos
-assets/js/app.js         buscador, mensaje de WhatsApp, la llama y opiniones
+assets/js/app.js         buscador, mensaje de WhatsApp, el robot y opiniones
 assets/js/opiniones.js   copia de respaldo de las opiniones
 apps-script/opiniones.gs código de la planilla de opiniones (Google Apps Script)
-assets/video/            video de la llama (MP4) y su imagen fija
+assets/video/            video de la llama anterior (ya no se usa en la página)
 assets/img/              logo, íconos e imagen para compartir (og.jpg)
 CNAME                    dominio de GitHub Pages (modofix.cl)
 robots.txt, sitemap.xml  para buscadores
@@ -76,10 +76,10 @@ En vez del ALIAS también sirven cuatro registros A para `@`: 185.199.108.153, 1
 
 En GitHub, la configuración está en Settings › Pages: se publica desde la rama `main`, carpeta raíz, con el dominio personalizado `modofix.cl` (lo fija el archivo `CNAME`). Cuando el DNS ya apunta a GitHub y aparece el certificado, se marca «Enforce HTTPS» en esa misma página.
 
-## Fuentes y video
+## Fuentes y robot
 
 - **Tipografía:** Golos Text, desde Google Fonts.
-- **Video de portada:** la llama del ejemplo «SynapseX» de MotionSites, recoloreada en turquesa. Son 4 segundos de la llama girando la cabeza de izquierda a derecha; no se reproduce: la página salta al cuadro que mira hacia el cursor, y para arriba o abajo estira o encoge un poco el cuello. Va en 768 px de alto para computador y 480 px para celular, más una imagen fija. Si el servidor no entrega el video por partes, la página lo descarga completo una vez y lo usa desde la memoria.
+- **Robot de portada:** dibujo propio en SVG por capas (`fuente/robot.svg`), con los colores del logo, que se inserta en el HTML al generar el sitio. El script mueve cada capa según su profundidad (la cara más que el casco, los ojos más que la cara y el brillo al revés), así la cabeza mira hacia el cursor a los lados y también arriba o abajo. Además respira, parpadea, la antena se balancea con retraso, sonríe al pasar por el botón «Buscar mi servicio» o por las piezas, y si nadie mueve el cursor mira a su alrededor. Con «reducir movimiento» activado queda quieto. Reemplazó a la llama de MotionSites (sus videos siguen en `assets/video/`, sin usar).
 
 ## Buscadores (SEO)
 

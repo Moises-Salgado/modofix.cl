@@ -1,5 +1,5 @@
 /*
-  modofix.cl: buscador de servicios, mensaje de WhatsApp, video de portada y opiniones publicadas al instante.
+  modofix.cl: buscador de servicios, mensaje de WhatsApp, robot de portada y opiniones publicadas al instante.
 
   La lista de servicios vive en index.html (cada fila tiene data-id, data-price, data-desde y data-part).
   Este archivo la lee desde la página: para cambiar un precio basta con editar esa fila.
@@ -23,113 +23,121 @@
   const X_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>';
   const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.84 5.76 6.36.92-4.6 4.48 1.08 6.33L12 17.3l-5.68 2.99 1.08-6.33-4.6-4.48 6.36-.92z"></path></svg>';
 
-  /* ---------- portada: la llama mira hacia el cursor ----------
-     El video (4 s) es la llama girando la cabeza de izquierda a derecha. No se reproduce:
-     cada movimiento del cursor (o del dedo) elige el momento del video que mira hacia ahí.
-     El video no trae movimiento hacia arriba o abajo: para eso se estira o se encoge un poco el cuello
-     (la imagen crece o baja desde el pecho) con una leve inclinación. */
+  /* ---------- portada: el robot ModoFix mira hacia el cursor ----------
+     Es un dibujo SVG por capas (fuente/robot.svg). Cada capa se mueve según su profundidad:
+     la cara más que el casco y los ojos más que la cara, y el brillo al revés; así la cabeza parece girar en 3D,
+     a los lados y también hacia arriba o abajo. Además respira, parpadea, la antena se balancea con retraso
+     y sonríe cuando el cursor pasa por el botón o por las piezas del despiece. */
   const hero = $('.mf-hero');
-  const llama = $('[data-llama]');
-  const lv = llama ? $('video', llama) : null;
-  if (hero && lv) {
-    let dur = 0;
-    let target = 0;
-    let shown = 0;
-    let tilt = 0;
-    let tiltTo = 0;
-    let ready = false;
-    let seeking = false;
-    let raf = 0;
-    let visible = true;
-    let since = 0;
+  const robot = $('[data-robot]');
+  if (hero && robot) {
+    const part = (n) => $('[data-rb="' + n + '"]', robot);
+    const L = {};
+    ['body', 'neck', 'head', 'antenna', 'halo', 'ear-l', 'ear-r', 'shine', 'face', 'eyes', 'eye-l', 'eye-r', 'mouth', 'glare', 'leds']
+      .forEach((n) => { L[n] = part(n); });
+    const set = (el, t) => { if (el) el.setAttribute('transform', t); };
+    const f = (n) => n.toFixed(2);
+    const clamp = (v) => Math.min(1, Math.max(-1, v));
+    const leds = L.leds ? $$('circle', L.leds) : [];
+    let tx = 0, ty = 0, cx = 0, cy = 0, px = 0;
+    let ang = 0, vel = 0;
+    let hp = 0, happy = false;
+    let blinkAt = 0, blinkEnd = 0, nextBlink = performance.now() + 1800;
+    let lastMove = 0, wanderAt = 0;
+    let raf = 0, visible = true, prev = performance.now();
     const intro = [];
-    const UP_STRETCH = 0.055;
-    const UP_DEG = 3;
-    const kick = () => { if (!raf && visible) raf = requestAnimationFrame(step); };
-    function step() {
-      raf = 0;
-      if (!ready) return;
-      let again = false;
-      const dt = tiltTo - tilt;
-      if (Math.abs(dt) > 0.003) {
-        tilt += dt * 0.14;
-        lv.style.transform = 'perspective(900px) rotateX(' + (-tilt * UP_DEG).toFixed(2) + 'deg) scaleY(' + (1 - tilt * UP_STRETCH).toFixed(4) + ')';
-        again = true;
-      }
-      if (seeking && performance.now() - since < 600) {
-        again = true;
-      } else {
-        const diff = target - shown;
-        if (Math.abs(diff) >= 0.012) {
-          shown += Math.abs(diff) < 0.03 ? diff : diff * 0.22;
-          seeking = true;
-          since = performance.now();
-          lv.currentTime = shown;
-        }
-      }
-      if (again) kick();
-    }
+
     const lookAt = (x, y) => {
-      if (!ready || reduce.matches) return;
-      const r = lv.getBoundingClientRect();
-      const head = r.left + r.width / 2;
-      const f = Math.min(1, Math.max(0, 0.5 + (x - head) / (window.innerWidth * 0.9)));
-      target = f * dur;
-      if (typeof y === 'number') {
-        // arriba de los ojos: hasta el borde superior de la pantalla; abajo: hasta el final de la portada
-        const eyes = r.top + r.height * 0.32;
-        const room = y < eyes ? eyes : hero.getBoundingClientRect().bottom - eyes;
-        tiltTo = Math.min(1, Math.max(-1, (y - eyes) / Math.max(room, 1)));
+      const r = robot.getBoundingClientRect();
+      if (!r.width) return;
+      const hx = r.left + r.width / 2;
+      const hy = r.top + r.height * 0.37;
+      tx = clamp((x - hx) / (window.innerWidth * 0.42));
+      ty = clamp((y - hy) / (window.innerHeight * 0.55));
+    };
+    const blink = (now) => {
+      blinkAt = now;
+      blinkEnd = now + 170;
+      nextBlink = now + 2200 + Math.random() * 3800;
+      if (Math.random() < 0.2) nextBlink = now + 260; // a veces parpadea dos veces
+    };
+
+    function frame(now) {
+      raf = 0;
+      const dt = Math.min(0.05, (now - prev) / 1000);
+      prev = now;
+      const k = 1 - Math.exp(-dt * 7);
+      // sin cursor por un rato: mira a su alrededor, con calma
+      if (now - lastMove > 6000 && now > wanderAt) {
+        wanderAt = now + 2400 + Math.random() * 2600;
+        tx = (Math.random() * 2 - 1) * 0.55;
+        ty = (Math.random() * 2 - 1) * 0.3;
       }
-      kick();
-    };
-    lv.addEventListener('seeked', () => { seeking = false; kick(); });
-    // Para saltar de cuadro, el servidor tiene que entregar el video por partes. Si no lo hace,
-    // el navegador solo deja volver al inicio: entonces se descarga completo una vez y se usa desde la memoria.
-    let copied = false;
-    const allSeekable = () => {
-      const s = lv.seekable;
-      return s.length > 0 && s.end(s.length - 1) >= lv.duration - 0.1;
-    };
-    const useCopy = () => {
-      if (copied || !window.fetch || !window.URL || !URL.createObjectURL) return;
-      copied = true;
-      fetch(lv.currentSrc)
-        .then((r) => (r.ok ? r.blob() : Promise.reject(new Error('video ' + r.status))))
-        .then((b) => {
-          lv.src = URL.createObjectURL(b);
-          if (touch.matches) { const q = lv.play(); if (q && q.then) q.then(() => lv.pause()).catch(() => {}); }
-        })
-        .catch(() => {});
-    };
-    const start = () => {
-      if (ready || !lv.duration) return;
-      if (!allSeekable()) { useCopy(); return; }
-      dur = lv.duration;
-      shown = target = dur / 2;
-      seeking = true;
-      lv.currentTime = shown;
-      ready = true;
-      // en pantallas táctiles, la llama mira a los lados una vez para mostrar que se mueve
-      if (touch.matches && !reduce.matches) {
-        const seq = [0.18, 0.82, 0.5];
-        seq.forEach((f, i) => { intro.push(window.setTimeout(() => { target = f * dur; kick(); }, 700 + i * 900)); });
-      }
-    };
-    lv.addEventListener('loadedmetadata', start);
-    if (lv.readyState >= 1) start();
-    // iOS solo pinta cuadros de un video después de reproducirlo una vez
-    const p = lv.play();
-    if (p && p.then) p.then(() => { lv.pause(); start(); }).catch(() => {});
-    window.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') lookAt(e.clientX, e.clientY); }, { passive: true });
-    window.addEventListener('pointerdown', (e) => { intro.forEach((t) => window.clearTimeout(t)); lookAt(e.clientX, e.clientY); }, { passive: true });
-    hero.addEventListener('touchmove', (e) => { if (e.touches[0]) lookAt(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      cx += (tx - cx) * k;
+      cy += (ty - cy) * k;
+      // la antena se queda atrás cuando la cabeza gira y después rebota
+      vel += (cx - px) * -70 - ang * 0.09 * (dt * 60) - vel * 0.1 * (dt * 60);
+      ang = Math.max(-20, Math.min(20, ang + vel * dt * 60 * 0.5));
+      px = cx;
+      hp += ((happy ? 1 : 0) - hp) * (1 - Math.exp(-dt * 9));
+      if (now > nextBlink && now > blinkEnd + 80) blink(now);
+      const bt = now < blinkEnd ? 1 - Math.abs((now - blinkAt) / (blinkEnd - blinkAt) * 2 - 1) : 0;
+      const t = now / 1000;
+      const breath = Math.sin(t * 1.5);
+      const ax = Math.abs(cx), ay = Math.abs(cy);
+
+      set(L.body, 'translate(' + f(cx * 5) + ' ' + f(breath * 1.4) + ')');
+      set(L.neck, 'translate(' + f(cx * 9) + ' ' + f(breath * 2 + cy * 3) + ')');
+      set(L.head, 'translate(' + f(cx * 17) + ' ' + f(cy * 11 + breath * 3) + ') rotate(' + f(cx * 4 + cy * cx * 2) + ' 260 280)');
+      set(L['ear-l'], 'translate(' + f(-cx * 6 + (cx > 0 ? cx * 4 : 0)) + ' 0)');
+      set(L['ear-r'], 'translate(' + f(-cx * 6 + (cx < 0 ? cx * 4 : 0)) + ' 0)');
+      set(L.face, 'translate(' + f(260 + cx * 22) + ' ' + f(178 + cy * 14) + ') scale(' + (1 - ax * 0.07).toFixed(3) + ' ' + (1 - ay * 0.06).toFixed(3) + ') translate(-260 -178)');
+      set(L.eyes, 'translate(' + f(cx * 13) + ' ' + f(cy * 10 - hp * 4) + ')');
+      const sy = (1 - bt * 0.92) * (1 - hp * 0.42);
+      set(L['eye-l'], 'translate(0 174) scale(1 ' + sy.toFixed(3) + ') translate(0 -174)');
+      set(L['eye-r'], 'translate(0 174) scale(1 ' + sy.toFixed(3) + ') translate(0 -174)');
+      if (L.mouth) L.mouth.setAttribute('d', 'M' + f(244 - hp * 8) + ' ' + f(214 - hp * 3) + ' Q260 ' + f(224 + hp * 14) + ' ' + f(276 + hp * 8) + ' ' + f(214 - hp * 3));
+      set(L.glare, 'translate(' + f(-cx * 20) + ' ' + f(-cy * 6) + ')');
+      set(L.shine, 'translate(' + f(-cx * 9) + ' ' + f(-cy * 4) + ')');
+      set(L.antenna, 'rotate(' + f(ang - cx * 3) + ' 260 92)');
+      if (L.halo) L.halo.setAttribute('opacity', (0.55 + 0.45 * Math.sin(t * 2.6)).toFixed(2));
+      const on = Math.floor(t / 0.45) % 3;
+      leds.forEach((c, i) => c.setAttribute('opacity', i === on ? '1' : '0.22'));
+      if (visible) raf = requestAnimationFrame(frame);
+    }
+    const kick = () => { if (!raf && visible && !reduce.matches) { prev = performance.now(); raf = requestAnimationFrame(frame); } };
+
+    const onPoint = (x, y) => { lastMove = performance.now(); lookAt(x, y); kick(); };
+    window.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') onPoint(e.clientX, e.clientY); }, { passive: true });
+    window.addEventListener('pointerdown', (e) => {
+      intro.forEach((id) => window.clearTimeout(id));
+      onPoint(e.clientX, e.clientY);
+      vel -= 4; // la antena salta un poco
+      blink(performance.now());
+    }, { passive: true });
+    hero.addEventListener('touchmove', (e) => { if (e.touches[0]) onPoint(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    // sonríe con el botón principal y con las piezas del despiece
+    $$('.mf-cta, .mf-fig').forEach((el) => {
+      el.addEventListener('pointerenter', () => { happy = true; }, { passive: true });
+      el.addEventListener('pointerleave', () => { happy = false; }, { passive: true });
+      el.addEventListener('focusin', () => { happy = true; });
+      el.addEventListener('focusout', () => { happy = false; });
+    });
+    // en pantallas táctiles mira a los lados una vez para mostrar que se mueve
+    if (touch.matches && !reduce.matches) {
+      lastMove = performance.now() + 3000;
+      [[-0.8, -0.2], [0.8, 0.1], [0, 0]].forEach((p, i) => {
+        intro.push(window.setTimeout(() => { tx = p[0]; ty = p[1]; kick(); }, 700 + i * 900));
+      });
+    }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver((entries) => {
         visible = entries[entries.length - 1].isIntersecting;
         if (visible) kick();
       }).observe(hero);
     }
+    if (reduce.addEventListener) reduce.addEventListener('change', kick);
+    kick();
   }
 
   /* ---------- servicios ---------- */

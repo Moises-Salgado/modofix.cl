@@ -564,18 +564,15 @@ body { margin: 0; }
   .mf-row.is-active .mf-row__key { visibility: hidden; }
 }
 
-/* ---------- portada: la llama que mira hacia el cursor ----------
-   El video va alineado con el contenido (no con la ventana) y se funde con el fondo
-   (mix-blend-mode: screen): el negro del video desaparece y queda solo la llama con su luz. */
+/* ---------- portada: el robot que mira hacia el cursor ----------
+   Dibujo SVG por capas (fuente/robot.svg), alineado con el contenido (no con la ventana).
+   app.src.js mueve cada capa según su profundidad. */
 .mf-hero__stage { position: absolute; top: 0; bottom: 0; left: 0; right: 0; max-width: 1264px; margin: 0 auto; }
 .mf-hero__bg::before { display: none !important; }
-.mf-llama { position: absolute; bottom: 0; right: -10%; height: 100%; aspect-ratio: 13 / 12; pointer-events: none; }
-.mf-llama__video {
-  display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen;
-  transform-origin: 50% 92%; will-change: transform;
-  -webkit-mask-image: radial-gradient(ellipse 50% 56% at 50% 50%, #000 72%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 56% at 50% 50%, #000 72%, transparent 100%);
-}
+/* sale hacia la derecha del contenido, pero nunca más allá del borde de la ventana (la oreja queda a la vista) */
+.mf-robot { position: absolute; bottom: 0; right: max(-15%, calc((100% - 100vw) / 2 - 110px)); height: 88%; aspect-ratio: 13 / 12; pointer-events: none; }
+@media (max-width: 1439px) and (min-width: 1181px) { .mf-robot { height: 82%; } }
+.mf-robot__svg { display: block; width: 100%; height: 100%; overflow: visible; }
 /* sombras: detrás del texto y en los bordes de arriba y abajo */
 .mf-hero__bg::after {
   background: linear-gradient(180deg, #011A2E 0%, rgba(1, 26, 46, 0) 12%, rgba(1, 26, 46, 0) 90%, #011A2E 100%);
@@ -584,21 +581,21 @@ body { margin: 0; }
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(90deg, rgba(1, 26, 46, .92) 0%, rgba(1, 26, 46, .8) 34%, rgba(1, 26, 46, 0) 50%);
 }
-/* el despiece queda más chico, entre el texto y la llama, y por delante de ella */
+/* el despiece queda más chico, entre el texto y el robot, y por delante de ella */
 .mf-fig { position: relative; z-index: 2; width: 76%; margin-top: 7%; margin-left: -6%; }
 .mf-fig__cap { text-align: left; }
 @media (max-width: 1180px) and (min-width: 821px) {
-  .mf-llama { right: -13%; }
+  .mf-robot { right: -5%; height: 70%; }
   .mf-fig { width: 76%; margin-left: -8%; }
 }
-/* celular y tablet vertical: la llama abajo a la derecha, bajo el botón, junto al despiece */
+/* celular y tablet vertical: el robot abajo a la derecha, bajo el botón, junto al despiece */
 @media (max-width: 820px) {
-  .mf-llama { --w: min(80%, 420px); left: auto; right: calc(var(--w) * -0.18); bottom: 0; height: auto; width: var(--w); transform: none; }
+  .mf-robot { --w: min(74%, 400px); left: auto; right: calc(var(--w) * -0.14); bottom: 0; height: auto; width: var(--w); transform: none; }
   .mf-hero__stage::after { display: none; }
   .mf-fig { width: 64%; margin: 0; }
 }
 @media (min-width: 600px) and (max-width: 820px) {
-  .mf-llama { --w: min(64%, 470px); }
+  .mf-robot { --w: min(58%, 440px); }
   .mf-fig { width: 56%; }
 }
 
