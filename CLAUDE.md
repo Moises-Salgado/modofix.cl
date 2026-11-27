@@ -1,6 +1,6 @@
 # Contexto del proyecto modofix.cl
 
-Este archivo guarda el contexto de trabajo de modofix.cl para retomarlo en cualquier conversación o sesión de Claude Code, sin mezclarlo con otros proyectos. Si cambia algo importante, actualízalo aquí.
+Este archivo guarda el contexto de trabajo de modofix.cl para retomarlo en cualquier conversación o sesión de Claude Code, sin mezclarlo con otros proyectos. Si cambia algo importante, actualízalo aquí. Hay una copia en el Proyecto «Modofix» de Claude (contexto-modofix.md).
 
 ## Qué es
 
@@ -33,7 +33,7 @@ ModoFix es el servicio técnico de Moisés Salgado: computadores, notebooks y ce
 
 ## Portada
 
-- Llama con lentes que gira la cabeza hacia el cursor (o el dedo en celular). Video del ejemplo «SynapseX» de MotionSites, recoloreado en turquesa: `assets/video/llama-768.mp4` (computador), `llama-480.mp4` (celular) y `llama-poster.jpg`.
+- Llama con lentes que gira la cabeza hacia el cursor (o el dedo en celular). Video del ejemplo «SynapseX» de MotionSites, recoloreado en turquesa: `assets/video/llama-768.mp4` (computador), `llama-480.mp4` (celular) y `llama-poster.jpg`. 4 segundos, 24 cuadros por segundo (97 cuadros), con un cuadro completo cada 3 para saltar rápido.
 - No se reproduce: el script salta al cuadro que mira hacia el cursor; arriba/abajo es una imitación (el cuello se estira o encoge un poco). Si el servidor no entrega el video por partes, se descarga completo y se usa desde la memoria.
 - Pendiente de Moisés: confirmar que las condiciones de MotionSites permiten usar el video (su cuenta allá es gratuita).
 - Delante va el dibujo del notebook y celular desarmados (las piezas muestran nombre y precio).
