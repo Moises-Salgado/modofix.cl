@@ -87,6 +87,10 @@ En GitHub, la configuración está en Settings › Pages: se publica desde la ra
 - Datos del negocio (schema.org LocalBusiness: dirección, teléfono, zona y la lista de servicios con precios) escritos en el HTML, armados desde la misma lista de servicios.
 - `sitemap.xml` con la fecha de la última publicación y `robots.txt` que lo apunta.
 - `llms.txt`: resumen en texto para buscadores con IA.
-- Preguntas frecuentes en el inicio y cuatro páginas por servicio (formateo, cambio de pantalla de celular, limpieza y pasta térmica, disco SSD y RAM), armadas en `build.py` desde la misma lista de precios. Cada una tiene su título, descripción y datos para Google, y van en el sitemap.
-- Las opiniones de `assets/js/opiniones.js` van escritas en el HTML del inicio y de las páginas por servicio (y en `llms.txt`), para que los buscadores las lean sin JavaScript. Al llegar opiniones nuevas, pon al día esa copia y vuelve a armar el sitio con `build.py`.
+- Preguntas frecuentes en el inicio y cuatro páginas por servicio (formateo, cambio de pantalla de celular, limpieza y pasta térmica, disco SSD y RAM), armadas en `fuente/build.py` desde la misma lista de precios. Cada una tiene su título, descripción y datos para Google, y van en el sitemap.
+- Las opiniones de `assets/js/opiniones.js` van escritas en el HTML del inicio y de las páginas por servicio (y en `llms.txt`), para que los buscadores las lean sin JavaScript. Al llegar opiniones nuevas, pon al día esa copia y vuelve a armar el sitio con `python3 fuente/build.py`.
 - Fuera de la página: Google Search Console (enviar el sitemap) y el Perfil de Empresa en Google, que es lo que más pesa para salir en el mapa.
+
+## Cómo se arma el sitio
+
+Los archivos publicados se generan con `python3 fuente/build.py` desde las fuentes de la carpeta `fuente/` (no se editan a mano). El contexto completo del proyecto, las reglas de trabajo y lo pendiente están en `CLAUDE.md`.

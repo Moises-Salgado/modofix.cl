@@ -1,0 +1,46 @@
+
+/* ---------- background video in the hero (screen-blended, behind the drawing) ---------- */
+.p2-hero { position: relative; isolation: isolate; overflow: hidden; }
+.p2-hero__bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: var(--bg); pointer-events: none; }
+.p2-hero__video, .p2-hero__bg::before {
+  position: absolute; top: 0; left: 10%; width: 145%; height: 100%;
+  mix-blend-mode: screen; opacity: .55;
+}
+.p2-hero__video { display: block; object-fit: cover; object-position: 50% 62%; }
+.p2-hero__bg::before {
+  content: ''; display: none;
+  background: url(/_blob/46553513b7eff853f854523e9d72528a) 50% 62% / cover no-repeat;
+}
+/* scrims: the text column stays dark, the top and bottom melt into the page */
+.p2-hero__bg::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, #011A2E 0%, rgba(1, 26, 46, .94) 30%, rgba(1, 26, 46, .35) 62%, rgba(1, 26, 46, .2) 100%),
+    linear-gradient(180deg, #011A2E 0%, rgba(1, 26, 46, 0) 18%, rgba(1, 26, 46, 0) 70%, #011A2E 100%);
+}
+.p2-hero.is-still .p2-hero__video { display: none; }
+.p2-hero.is-still .p2-hero__bg::before { display: block; }
+.p2-still {
+  position: absolute; right: 24px; bottom: 20px; z-index: 2; display: grid; place-items: center;
+  width: 44px; height: 44px; padding: 0; cursor: pointer; border-radius: 50%;
+  border: 1px solid var(--line-2); background: rgba(1, 26, 46, .7); color: var(--text-2);
+  transition: color .15s, border-color .15s;
+}
+.p2-still:hover { color: var(--text); border-color: var(--text-3); }
+.p2-still svg { width: 16px; height: 16px; }
+.p2-still__play { display: none; }
+.p2-hero.is-still .p2-still__pause { display: none; }
+.p2-hero.is-still .p2-still__play { display: block; }
+@media (prefers-reduced-motion: reduce) {
+  .p2-hero__video, .p2-still { display: none; }
+  .p2-hero__bg::before { display: block; }
+}
+@media (max-width: 820px) {
+  .p2-hero__video, .p2-hero__bg::before { left: 0; width: 100%; opacity: .5; }
+  .p2-hero__video { object-position: 50% 50%; }
+  .p2-hero__bg::before { background-position: 50% 50%; }
+  .p2-hero__bg::after {
+    background: linear-gradient(180deg, #011A2E 0%, rgba(1, 26, 46, .93) 36%, rgba(1, 26, 46, .3) 60%, rgba(1, 26, 46, .25) 86%, #011A2E 100%);
+  }
+  .p2-still { right: 14px; bottom: 14px; }
+}
