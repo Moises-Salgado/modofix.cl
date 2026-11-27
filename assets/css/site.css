@@ -681,3 +681,5 @@ body { margin: 0; }
   .mf-svc__list li, .mf-svc__rows li { font-size: 16px; }
   .mf-svc .mf-404__actions .mf-btn { flex: 1 1 100%; justify-content: center; }
 }
+.mf-svc__ops .mf-reviews__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; align-items: start; }
+.mf-svc__ops .mf-review { margin: 0; }
